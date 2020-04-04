@@ -25,15 +25,12 @@
 // function init() {
 
 // }
-
-// - [ ] Prompt the user
-// - [ ] Fetch GitHub Data
-// - [ ] Print GitHub Data
 const fs = require("fs");
 const util = require("util");
 const inquirer = require("inquirer");
 const axios = require("axios");
 const writeFile = util.promisify(fs.writeFile);
+const generateMarkdown = require("./utils/generateMarkdown.js")
 // // ask user for github username
 inquirer
   .prompt([
@@ -44,29 +41,39 @@ inquirer
     },
     {
         type: "input",
-        name: "projectname",
-        message: "What is your project's name?"
+        name: "title",
+        message: "What is the title of your project?"
+    },
+    {
+        type: "input",
+        name: "description",
+        message: "Write a brief description of your project"
     }
     // {
-    //     type: "input",
-    //     name: "project-name",
-    //     message: "What is your project's name?"
+    //     type: "checkbox", /*???????*/
+    //     name: "license",
+    //     message: "What licenses does your project have?"
     // },
     // {
     //     type: "input",
-    //     name: "project-name",
-    //     message: "What is your project's name?"
+    //     name: "dependencies",
+    //     message: "What command should be run to install dependencies?"
     // },
     // {
     //     type: "input",
-    //     name: "project-name",
-    //     message: "What is your project's name?"
+    //     name: "tests",
+    //     message: "What command does the user need to run to run tests?"
+    // },
+        // {
+    //     type: "input"
+    //     name: "repoinfo",
+    //     message: "What should a user know about using this repo?"
     // },
     // {
-    //     type: "input",
-    //     name: "project-name",
-    //     message: "What is your project's name?"
-    // },
+    //     type: "input"
+    //     name: "contributing",
+    //     message: "What should the user need to know about contributing to this repo?"
+    // }
   ])
   .then(answers => {
       console.log(answers.username);
@@ -86,13 +93,18 @@ inquirer
     // save markdown to file
     return writeFile("output/readme.md", imageMarkdown);
   })
-  .then (answers =>{
-      console.log(answers.projectname);
+//   .then (answers =>{
+//       console.log(answers.projectname);
 //       const project = `Title: 
 // ${answers.projectname}`
 //       return writeFile("output/readme.md", project);
 
-  })
+//   })
+.then(answers => {
+    console.log(answers.title)
+  // const userInputs = generateMarkdown(answers);
+    //return writeFile("output/readme.md", userInputs);
+})
   .then(() => {
     console.log("created readme")
   })
@@ -101,4 +113,4 @@ inquirer
     process.exit(1);
   });
 
- //init();
+ 
